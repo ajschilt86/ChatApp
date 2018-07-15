@@ -32,7 +32,7 @@ $("#click-button").on("click", function (event) {
     localStorage.setItem("name", name);
 
     // Change what is saved in firebase
-    database.ref().set({
+    database.ref().push({
         name: name,
         chat: chat,
     });
@@ -59,7 +59,7 @@ $(document).keydown(function (e) {
         localStorage.setItem("name", name);
 
         // Change what is saved in firebase
-        database.ref().set({
+        database.ref().push({
             name: name,
             chat: chat,
         });
@@ -76,7 +76,7 @@ $(document).keydown(function (e) {
 
 // Firebase is always watching for changes to the data.
 // When changes occurs it will print them to console and html
-database.ref().on("value", function (snapshot) {
+database.ref().on("child_added", function (snapshot) {
 
     // Print the initial data to the console.
     console.log(snapshot.val());
@@ -86,7 +86,7 @@ database.ref().on("value", function (snapshot) {
     console.log(snapshot.val().chat);
 
     // Change the HTML    
-    $("#displayed-data").append("<div>" + snapshot.val().name + " | " + snapshot.val().chat + "</div>");
+    $("#displayed-data").append("<div>" + snapshot.val().name + ": " + snapshot.val().chat + "</div>");
 
     // If any errors are experienced, log them to console.
 }, function (errorObject) {
